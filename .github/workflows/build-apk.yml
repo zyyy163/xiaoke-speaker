@@ -36,7 +36,12 @@ jobs:
           gradle --version
 
       - name: Build Debug APK
-        run: gradle assembleDebug --no-daemon 2>&1 | tail -100
+        run: |
+          set -o pipefail
+          gradle assembleDebug --no-daemon 2>&1 | tail -100
+
+      - name: List APK files
+        run: find app/build -name '*.apk' -type f 2>/dev/null || echo "No APK files found"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
