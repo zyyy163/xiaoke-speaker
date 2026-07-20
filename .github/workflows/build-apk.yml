@@ -20,13 +20,6 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Download Gradle wrapper
-        run: |
-          curl -sL "https://services.gradle.org/distributions/gradle-8.5-bin.zip" -o /tmp/gradle.zip
-          unzip -q /tmp/gradle.zip -d /tmp/gradle
-          /tmp/gradle/gradle-8.5/bin/gradle wrapper --gradle-version 8.5
-          chmod +x gradlew
-
       - name: Build Debug APK
         run: ./gradlew assembleDebug --no-daemon
 
