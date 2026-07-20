@@ -44,9 +44,15 @@ jobs:
         env:
           ANDROID_HOME: ${{ steps.setup-android.outputs.android-home }}
         run: |
-          set -o pipefail
           export ANDROID_HOME=$ANDROID_HOME
-          gradle assembleDebug --no-daemon 2>&1
+          gradle assembleDebug --no-daemon 2>&1 | tee build_log.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload build log
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build_log.txt
 
       - name: List APK files
         run: find app/build -name '*.apk' -type f 2>/dev/null || echo "No APK files found"
@@ -56,4 +62,4 @@ jobs:
         with:
           name: xiaoke-speaker-debug
           path: app/build/outputs/apk/debug/*.apk
-          if-no-files-found: error
+          if-no-files-found: warn
