@@ -15,7 +15,6 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
         android:label="小科科普助手"
         android:supportsRtl="true"
         android:theme="@style/Theme.XiaoKe"
