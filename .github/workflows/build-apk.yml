@@ -18,10 +18,18 @@ jobs:
           java-version: 17
 
       - name: Setup Android SDK
+        id: setup-android
         uses: android-actions/setup-android@v2
         with:
           api-level: 34
           build-tools: 34.0.0
+
+      - name: Check environment
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "PATH=$PATH"
+          ls -la $ANDROID_HOME/platforms/ 2>/dev/null || echo "No platforms found"
+          ls -la $ANDROID_HOME/build-tools/ 2>/dev/null || echo "No build-tools found"
 
       - name: Download Gradle
         run: |
@@ -33,8 +41,11 @@ jobs:
           gradle --version
 
       - name: Build Debug APK
+        env:
+          ANDROID_HOME: ${{ steps.setup-android.outputs.android-home }}
         run: |
           set -o pipefail
+          export ANDROID_HOME=$ANDROID_HOME
           gradle assembleDebug --no-daemon 2>&1
 
       - name: List APK files
