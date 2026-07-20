@@ -35,7 +35,7 @@ jobs:
       - name: Build Debug APK
         run: |
           set -o pipefail
-          gradle assembleDebug --no-daemon 2>&1 | tail -100
+          gradle assembleDebug --no-daemon 2>&1
 
       - name: List APK files
         run: find app/build -name '*.apk' -type f 2>/dev/null || echo "No APK files found"
