@@ -41,12 +41,8 @@ jobs:
           gradle --version
 
       - name: Build Debug APK
-        env:
-          ANDROID_HOME: ${{ steps.setup-android.outputs.android-home }}
         run: |
-          export ANDROID_HOME=$ANDROID_HOME
           gradle assembleDebug --no-daemon 2>&1 | tee build_log.txt
-          exit ${PIPESTATUS[0]}
 
       - name: Upload build log
         if: always()
