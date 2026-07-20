@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.webkit.JavascriptInterface;
+import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -20,15 +21,6 @@ import androidx.core.content.ContextCompat;
 
 import java.util.Locale;
 
-/**
- * 小科科普助手 - Android APK
- *
- * 核心策略：
- * - WebView 壳，加载远程 Web 版页面
- * - 所有语音逻辑（录音/STT/TTS）走 Web 前端（MediaRecorder + API）
- * - APK 只负责：TTS 朗读（Brige.speak）、唤醒检测、保活
- * - 不依赖 Google SpeechRecognizer（鸿蒙/华为兼容）
- */
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSION_REQUEST_CODE = 1001;
@@ -63,11 +55,24 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedSslError(WebView view, android.webkit.SslErrorHandler handler, android.net.http.SslError error) {
-                handler.proceed(); // 局域网环境自签名证书
+                handler.proceed();
             }
         });
 
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onPermissionRequest(PermissionRequest request) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    for (String permission : request.getResources()) {
+                        if (permission.equals(PermissionRequest.RESOURCE_AUDIO_CAPTURE)) {
+                            request.grant(request.getResources());
+                            return;
+                        }
+                    }
+                    request.deny();
+                }
+            }
+        });
         webView.addJavascriptInterface(new NativeBridge(), "NativeBridge");
         webView.loadUrl(SERVER_URL);
     }
@@ -112,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // ============ JS Bridge ============
     public class NativeBridge {
         @JavascriptInterface
         public void speak(final String text) {
