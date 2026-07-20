@@ -1,5 +1,4 @@
-import os
-import base64
+﻿import os
 
 icons = {
     'mdpi': 48,
@@ -9,15 +8,41 @@ icons = {
     'xxxhdpi': 192
 }
 
+# 卡通风格小科机器人图标
 svg_template = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-    <circle cx="50" cy="50" r="45" fill="#FF9A9E"/>
-    <circle cx="35" cy="45" r="8" fill="#FFFFFF"/>
-    <circle cx="65" cy="45" r="8" fill="#FFFFFF"/>
-    <circle cx="37" cy="47" r="4" fill="#333333"/>
-    <circle cx="67" cy="47" r="4" fill="#333333"/>
-    <path d="M35 65 Q50 80 65 65" stroke="#FFFFFF" stroke-width="4" fill="none"/>
-    <rect x="20" y="20" width="15" height="20" rx="3" fill="#FFFFFF" opacity="0.8"/>
-    <rect x="65" y="20" width="15" height="20" rx="3" fill="#FFFFFF" opacity="0.8"/>
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#667eea"/>
+            <stop offset="100%" stop-color="#764ba2"/>
+        </linearGradient>
+        <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FF9A9E"/>
+            <stop offset="100%" stop-color="#FAD0C4"/>
+        </linearGradient>
+    </defs>
+    <rect x="2" y="2" width="96" height="96" rx="20" fill="url(#bg)"/>
+    <ellipse cx="50" cy="62" rx="28" ry="22" fill="url(#body)"/>
+    <circle cx="50" cy="44" r="6" fill="#fff" opacity="0.6"/>
+    <line x1="50" y1="18" x2="50" y2="8" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+    <circle cx="50" cy="6" r="4" fill="#ffd700"/>
+    <circle cx="50" cy="40" r="24" fill="url(#body)"/>
+    <circle cx="32" cy="26" r="3" fill="#667eea" opacity="0.5"/>
+    <circle cx="50" cy="20" r="4" fill="#667eea" opacity="0.5"/>
+    <circle cx="68" cy="26" r="3" fill="#667eea" opacity="0.5"/>
+    <ellipse cx="40" cy="38" rx="7" ry="8" fill="#fff"/>
+    <circle cx="41" cy="37" r="4" fill="#333"/>
+    <circle cx="43" cy="35" r="1.5" fill="#fff"/>
+    <ellipse cx="60" cy="38" rx="7" ry="8" fill="#fff"/>
+    <circle cx="61" cy="37" r="4" fill="#333"/>
+    <circle cx="63" cy="35" r="1.5" fill="#fff"/>
+    <ellipse cx="32" cy="46" rx="5" ry="3" fill="#ff6b81" opacity="0.4"/>
+    <ellipse cx="68" cy="46" rx="5" ry="3" fill="#ff6b81" opacity="0.4"/>
+    <path d="M42 50 Q50 58 58 50" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M10 50 Q6 42 10 34" stroke="#fff" stroke-width="2" fill="none" opacity="0.6" stroke-linecap="round"/>
+    <path d="M14 55 Q8 45 14 35" stroke="#fff" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <path d="M90 50 Q94 42 90 34" stroke="#fff" stroke-width="2" fill="none" opacity="0.6" stroke-linecap="round"/>
+    <path d="M86 55 Q92 45 86 35" stroke="#fff" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <text x="50" y="90" text-anchor="middle" font-size="9" fill="#fff" font-weight="bold" font-family="sans-serif">小科</text>
 </svg>'''
 
 res_dir = os.path.join(os.path.dirname(__file__), 'app', 'src', 'main', 'res')
