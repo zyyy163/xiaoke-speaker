@@ -20,17 +20,15 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Initialize Gradle wrapper
+      - name: Download Gradle
         run: |
           GRADLE_VERSION=$(grep -oP 'gradle-\K[0-9.]+' gradle/wrapper/gradle-wrapper.properties | head -1)
-          mkdir -p gradle/wrapper
-          curl -sL "https://services.gradle.org/distributions/gradle-wrapper-${GRADLE_VERSION}-all.zip" -o /tmp/wrapper.zip
-          unzip -q /tmp/wrapper.zip -d /tmp
-          cp /tmp/gradle-${GRADLE_VERSION}/lib/gradle-wrapper.jar gradle/wrapper/gradle-wrapper.jar
-          chmod +x gradlew
+          curl -sL "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip" -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /opt
+          echo "/opt/gradle-${GRADLE_VERSION}/bin" >> $GITHUB_PATH
 
       - name: Build Debug APK
-        run: ./gradlew assembleDebug --no-daemon
+        run: gradle assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
